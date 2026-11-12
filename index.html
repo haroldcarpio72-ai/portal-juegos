@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harold Abdel Carpio Santander | Portal de Videojuegos</title>
+<meta name="description" content="Portal de videojuegos de Harold Abdel Carpio Santander: Runner Urbano (endless runner 3D) y La Ciudad Sangrienta (laberinto 3D estilo Pac-Man), ambos jugables en la misma página.">
+<meta name="theme-color" content="#0b0610">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0610;--panel:#150a1f;--line:#ffffff1f;--red:#ff3d5a;--org:#ff9d2e;--pur:#8a3cff;--grn:#9dff1a;--wht:#f6eef2;--mut:#bfa9c9;
+--h:'Chakra Petch','Segoe UI',system-ui,sans-serif;--b:'Barlow','Segoe UI',system-ui,sans-serif;--ac:var(--grn)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--bg);color:var(--wht);font-family:var(--b);line-height:1.6;overflow-x:hidden;
+background-image:linear-gradient(#ffffff07 1px,transparent 1px),linear-gradient(90deg,#ffffff07 1px,transparent 1px),radial-gradient(circle at 8% 4%,#8a3cff40,transparent 40%),radial-gradient(circle at 94% 55%,#ff3d5a26,transparent 45%);
+background-size:56px 56px,56px 56px,auto,auto}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--org);outline-offset:3px}
+/* Cabecera */
+header{position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 4vw;background:#0b0610ec;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header::after{content:"";position:absolute;left:0;bottom:-1px;height:3px;width:var(--p,0%);background:linear-gradient(90deg,var(--grn),var(--org),var(--red))}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;line-height:1.1}
+.mk{width:36px;height:40px;flex:none;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(135deg,var(--grn),var(--pur));display:grid;place-items:center;color:#10061a;font:700 1.15rem var(--h)}
+.brand b{display:block;font:700 .98rem var(--h)}
+.brand small{color:var(--mut);font-size:.8rem}
+header nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+header nav a{font:600 .95rem var(--h);text-decoration:none;padding:8px 16px;border-bottom:3px solid transparent;transition:.2s;color:var(--mut)}
+header nav a:hover,header nav a.act{color:#fff;border-color:var(--ac);background:linear-gradient(#0000,color-mix(in srgb,var(--ac) 18%,transparent))}
+/* Botones */
+.btn{font:700 1.05rem var(--h);letter-spacing:.05em;text-transform:uppercase;padding:13px 30px;border:0;color:#10061a;background:var(--ac);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);cursor:pointer;transition:.18s;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(1.15);transform:translateY(-2px)}
+.btn.start{font-size:1.25rem;padding:13px 44px}
+.btn.sec{background:#ffffff16;color:var(--wht);font-size:.9rem;padding:11px 22px}
+.btn.sec:hover{background:#ffffff2e}
+.btn[disabled]{opacity:.35;cursor:not-allowed;transform:none;filter:none}
+/* Portada */
+.stage{position:relative;overflow:hidden}
+.cube{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);background:linear-gradient(135deg,#ffb454,#e0701a);box-shadow:0 0 26px #ff9d2e99;transform:rotate(var(--r));animation:fl var(--t) ease-in-out infinite alternate}
+@keyframes fl{to{transform:translateY(-36px) rotate(calc(var(--r) + 90deg))}}
+.dark{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle 330px at var(--mx,72%) var(--my,45%),transparent 0,#0b0610f2 100%)}
+.hero{position:relative;z-index:2;max-width:1300px;margin:auto;min-height:100vh;padding:120px 6vw 50px;display:grid;grid-template-columns:1.15fr .85fr;gap:4vw;align-items:center}
+.txt>*{animation:up .7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes up{from{opacity:0;transform:translateY(26px)}}
+.tag{display:inline-block;font:600 .85rem var(--h);letter-spacing:.08em;padding:4px 14px;margin-bottom:16px;background:#ff3d5a22;color:var(--red);border-left:3px solid var(--red)}
+h1{font:italic 700 clamp(2.4rem,6vw,5.2rem)/.98 var(--h);text-transform:uppercase}
+h1 span{display:block;background:linear-gradient(90deg,var(--red),var(--org));-webkit-background-clip:text;background-clip:text;color:transparent}
+.punch{font:600 1.35rem var(--h);margin:20px 0 8px}
+.d{color:var(--mut);max-width:54ch;margin-bottom:28px}
+.txt .btn{margin:0 10px 10px 0}
+.char{position:relative;animation:in 1s .2s cubic-bezier(.2,.7,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateX(60px)}}
+.char::before{content:"";position:absolute;inset:8% -6% -4%;background:radial-gradient(circle,#9dff1a55,transparent 65%);filter:blur(30px)}
+.frame{position:relative;max-width:440px;margin-left:auto;aspect-ratio:4/5;padding:3px;background:linear-gradient(135deg,var(--grn),var(--pur));clip-path:polygon(10% 0,100% 0,100% 90%,90% 100%,0 100%,0 10%)}
+.frame>div{position:relative;height:100%;overflow:hidden;clip-path:polygon(10% 0,100% 0,100% 90%,90% 100%,0 100%,0 10%);background:#222}
+.frame img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.hud{position:absolute;inset:auto 0 0;padding:34px 22px 16px;background:linear-gradient(#0000,#0b0610f0);display:flex;justify-content:space-between;align-items:end;font:700 1.1rem var(--h)}
+.hud em{font-style:normal;color:var(--red);letter-spacing:3px}
+.select{max-width:1300px;margin:0 auto;padding:10px 6vw 30px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.select a{position:relative;display:block;aspect-ratio:16/7;overflow:hidden;background:#000;text-decoration:none;clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,30px 100%,0 calc(100% - 30px))}
+.select img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 15%;transition:.5s;opacity:.75}
+.select a:hover img{transform:scale(1.07);opacity:1}
+.select a::after{content:"";position:absolute;inset:auto 0 0;height:5px;background:var(--ac);transition:.3s}
+.select a:hover::after{height:9px}
+.select div{position:absolute;inset:auto 0 0;padding:44px 24px 20px;background:linear-gradient(#0000,#0b0610e6);transition:.3s}
+.select a:hover div{transform:translateX(8px)}
+.select small{font:600 .85rem var(--h);color:var(--ac)}
+.select b{display:block;font:italic 700 1.9rem/1.1 var(--h);text-transform:uppercase}
+.select em{font-style:normal;color:var(--mut);font-size:.95rem}
+/* Juegos */
+.game{max-width:1200px;margin:auto;padding:80px 6vw}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+h2{font:italic 700 clamp(2.4rem,6vw,4.6rem)/1 var(--h);text-transform:uppercase;text-shadow:0 0 40px color-mix(in srgb,var(--ac) 55%,transparent)}
+h2::after{content:"";display:block;width:90px;height:6px;margin-top:12px;background:var(--ac);transform:skewX(-30deg)}
+.lead{color:var(--mut);max-width:62ch;margin-top:14px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;list-style:none;padding:0}
+.stats li{padding:8px 18px;border-left:3px solid var(--ac);background:#ffffff0d;font-size:.85rem;color:var(--mut);line-height:1.3}
+.stats b{display:block;font:700 1.7rem/1.1 var(--h);color:var(--ac)}
+.console{border:1px solid color-mix(in srgb,var(--ac) 55%,transparent);background:#0a0510;border-radius:6px;box-shadow:0 0 90px -20px color-mix(in srgb,var(--ac) 60%,transparent)}
+.bar{display:flex;align-items:center;gap:10px;padding:9px 16px;font:600 .85rem var(--h);color:var(--mut);border-bottom:1px solid var(--line)}
+.bar span:last-child{margin-left:auto}
+.led{width:9px;height:9px;border-radius:50%;background:#555;transition:.3s}
+.console.on .led{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+.screen{position:relative;aspect-ratio:16/10;width:100%;background:#000;overflow:hidden}
+.screen::before,.screen::after{content:"";position:absolute;z-index:3;width:34px;height:34px;pointer-events:none}
+.screen::before{top:10px;left:10px;border-top:3px solid var(--ac);border-left:3px solid var(--ac)}
+.screen::after{bottom:10px;right:10px;border-bottom:3px solid var(--ac);border-right:3px solid var(--ac)}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
+.screen.on iframe{display:block}
+.poster{position:absolute;inset:0;display:grid;place-items:center;background:#000}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4}
+.poster p{position:relative;font:italic 700 clamp(1.3rem,3.5vw,2.5rem) var(--h);padding:0 16px;text-align:center;text-shadow:0 0 24px var(--ac);animation:bl 1.4s steps(2) infinite}
+@keyframes bl{50%{opacity:.25}}
+.screen.on .poster{display:none}
+.load{position:absolute;inset:0;z-index:2;display:none;place-items:center;background:#0a0510;font:600 1rem var(--h);color:var(--ac)}
+.load::after{content:"";position:absolute;left:30%;right:30%;top:56%;height:4px;background:linear-gradient(90deg,transparent,var(--ac),transparent);background-size:50% 100%;background-repeat:no-repeat;animation:sl 1.1s linear infinite}
+@keyframes sl{from{background-position:-60% 0}to{background-position:160% 0}}
+.screen.loading .load{display:grid}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
+.status{flex:1 1 260px;color:var(--mut);font-size:.92rem}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:30px}
+.info div{background:var(--panel);border-top:3px solid var(--ac);padding:16px 20px}
+.info h3{font:700 1.1rem var(--h);color:var(--ac);margin-bottom:4px}
+.info p{color:var(--mut);font-size:.97rem}
+kbd{display:inline-block;min-width:28px;padding:0 8px;margin:0 2px;border:1px solid #ffffff55;border-bottom-width:3px;border-radius:5px;background:#ffffff12;color:var(--wht);font:600 .85rem var(--h);text-align:center}
+.credit{margin-top:20px;color:var(--mut);font-size:.9rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:26px}
+.gal figure{background:var(--panel);overflow:hidden;border-bottom:3px solid var(--ac)}
+.gal img{width:100%;display:block;transition:.4s}
+.gal figure:hover img{transform:scale(1.06)}
+.gal figure{position:relative}
+.gal figcaption{position:relative;background:var(--panel);padding:8px 14px;color:var(--mut);font-size:.9rem}
+footer{text-align:center;padding:36px 6vw 46px;border-top:1px solid var(--line);color:var(--mut)}
+footer p{margin:6px 0}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+@media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr);padding-top:150px;min-height:0}.frame{margin:auto;max-width:340px}.select{grid-template-columns:1fr}header{flex-direction:column;padding:8px 4vw}header nav{justify-content:center}html{scroll-padding-top:120px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header>
+ <a class="brand" href="#inicio" aria-label="Harold Abdel Carpio Santander, inicio"><span class="mk" aria-hidden="true">H</span><span><b>Harold Abdel Carpio Santander</b><small>Game developer</small></span></a>
+ <nav aria-label="Selección de juegos">
+  <a href="#juego1" style="--ac:var(--grn)">Juego 1: Runner Urbano</a>
+  <a href="#juego2" style="--ac:var(--red)">Juego 2: La Ciudad Sangrienta</a>
+ </nav>
+</header>
+
+<main id="inicio">
+<div class="stage" id="stage">
+ <div class="cubes" id="cubes" aria-hidden="true"></div>
+ <div class="dark" aria-hidden="true"></div>
+ <section class="hero">
+  <div class="txt">
+   <span class="tag">PORTAL DE VIDEOJUEGOS</span>
+   <h1>Harold Abdel <span>Carpio Santander</span></h1>
+   <p class="punch">Dos juegos 3D. Un solo portal. Tú decides cuándo empezar.</p>
+   <p class="d">Elige un juego: la página te lleva a su sección y lo ejecuta ahí mismo, sin pestañas ni ventanas nuevas. Cada juego espera hasta que presiones su botón START.</p>
+   <div><a class="btn" style="--ac:var(--grn)" href="#juego1">Juego 1 · Runner Urbano</a><a class="btn" style="--ac:var(--red)" href="#juego2">Juego 2 · La Ciudad Sangrienta</a></div>
+  </div>
+  <div class="char"><div class="frame"><div><img src="img/runner.jpg" alt="Personaje principal de los juegos, de pelo verde"><div class="hud"><span>SUJETO 001</span><em aria-label="3 vidas">♥♥♥</em></div></div></div></div>
+ </section>
+</div>
+
+<div class="select">
+ <a href="#juego1" style="--ac:var(--grn)"><img src="img/runner.jpg" alt=""><div><small>JUEGO 1</small><b>Runner Urbano</b><em>Endless runner 3D</em></div></a>
+ <a href="#juego2" style="--ac:var(--red)"><img src="img/escena.jpg" alt=""><div><small>JUEGO 2</small><b>La Ciudad Sangrienta</b><em>Laberinto 3D estilo Pac-Man</em></div></a>
+</div>
+
+<section class="game" id="juego1" style="--ac:var(--grn)">
+ <div class="head rv">
+  <div>
+   <h2>Runner Urbano</h2>
+   <p class="lead">Corre, salta y agáchate para esquivar los obstáculos de la calle. Empiezas con 3 vidas y ganas al llegar a 500 puntos.</p>
+  </div>
+  <ul class="stats"><li><b>3D</b>endless runner</li><li><b>3</b>vidas</li><li><b>500</b>puntos para ganar</li></ul>
+ </div>
+ <div class="console rv">
+  <div class="bar"><i class="led"></i><span>Runner Urbano</span><span>Unity WebGL</span></div>
+  <div class="screen" id="screen1">
+   <div class="poster"><img src="img/runner.jpg" alt=""><p>PRESIONA START PARA JUGAR</p></div>
+   <div class="load">CARGANDO JUEGO</div>
+   <iframe id="game1" title="Runner Urbano - Unity WebGL" data-src="https://aquamarine-pothos-2552f7.netlify.app/" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+  </div>
+  <div class="controls">
+   <button type="button" class="btn start" data-game="1">▶ START</button>
+   <button type="button" class="btn sec" data-act="fs" data-game="1" disabled>Pantalla completa</button>
+   <button type="button" class="btn sec" data-act="rl" data-game="1" disabled>Reiniciar juego</button>
+   <p class="status" id="st1" aria-live="polite">Presiona START para cargar y empezar el juego.</p>
+  </div>
+ </div>
+ <div class="info rv">
+  <div><h3>Controles</h3><p><kbd>↑</kbd> saltar obstáculos bajos · <kbd>↓</kbd> agacharse ante obstáculos altos. Haz clic dentro del juego para activar el teclado.</p></div>
+  <div><h3>Reglas</h3><p>3 vidas, cada choque resta una. Victoria a 500 puntos; derrota si te quedas sin vidas.</p></div>
+  <div><h3>Requisitos</h3><p>Navegador con WebGL 2.0 y conexión a internet. Se juega con teclado en PC.</p></div>
+ </div>
+ <p class="credit">Equipo: Harold Abdel Carpio Santander, Alexander Condori Nina y Pablo Alejandro Zaconeta Guanca · Unidad 2 y 3.</p>
+</section>
+
+<section class="game" id="juego2" style="--ac:var(--red)">
+ <div class="head rv">
+  <div>
+   <h2>La Ciudad Sangrienta</h2>
+   <p class="lead">Recoge los 36 núcleos del laberinto, evita a los dos bumeranes que te persiguen en cuanto te ven y cruza la puerta superior cuando se abra.</p>
+  </div>
+  <ul class="stats"><li><b>3D</b>laberinto estilo Pac-Man</li><li><b>36</b>núcleos</li><li><b>2</b>enemigos</li></ul>
+ </div>
+ <div class="console rv">
+  <div class="bar"><i class="led"></i><span>La Ciudad Sangrienta</span><span>Unity WebGL</span></div>
+  <div class="screen" id="screen2">
+   <div class="poster"><img src="img/escena.jpg" alt=""><p>PRESIONA START PARA JUGAR</p></div>
+   <div class="load">CARGANDO JUEGO</div>
+   <iframe id="game2" title="La Ciudad Sangrienta - Unity WebGL" data-src="https://illustrious-blancmange-930e81.netlify.app/" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+  </div>
+  <div class="controls">
+   <button type="button" class="btn start" data-game="2">▶ START</button>
+   <button type="button" class="btn sec" data-act="fs" data-game="2" disabled>Pantalla completa</button>
+   <button type="button" class="btn sec" data-act="rl" data-game="2" disabled>Reiniciar juego</button>
+   <p class="status" id="st2" aria-live="polite">Presiona START para cargar el juego.</p>
+  </div>
+ </div>
+ <div class="info rv">
+  <div><h3>Controles</h3><p><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> mover · <kbd>Enter</kbd> empezar partida dentro del juego · <kbd>R</kbd> reiniciar · <kbd>V</kbd> rayos de visión · <kbd>C</kbd> mapa completo.</p></div>
+  <div><h3>Reglas</h3><p>Ganas al recoger los 36 núcleos y cruzar la puerta abierta. Pierdes de inmediato si un enemigo te toca: no hay vidas.</p></div>
+  <div><h3>Mecánicas</h3><p>Enemigos con NavMesh (pathfinding), raycasting de visión (8 unidades) y estados de Patrulla y Persecución.</p></div>
+ </div>
+ <div class="gal rv">
+  <figure><img src="img/inicio.jpg" alt="Pantalla de inicio" loading="lazy"><figcaption>Pantalla de inicio</figcaption></figure>
+  <figure><img src="img/mapa.jpg" alt="Vista de mapa completo" loading="lazy"><figcaption>Mapa completo (tecla C)</figcaption></figure>
+  <figure><img src="img/derrota.jpg" alt="Panel Juego terminado" loading="lazy"><figcaption>Juego terminado</figcaption></figure>
+  <figure><img src="img/victoria.jpg" alt="Panel Victoria" loading="lazy"><figcaption>Victoria</figcaption></figure>
+ </div>
+</section>
+</main>
+
+<footer>
+ <p><a href="#inicio">Harold Abdel Carpio Santander</a> · Game Developer</p>
+ <p>Proyecto de Game Development · Unidad 4: Interfaz de usuarios · © 2026</p>
+ <p><a href="#inicio">Volver arriba ↑</a></p>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelectorAll(s)};
+ var games={1:{f:document.getElementById('game1'),s:document.getElementById('screen1'),t:document.getElementById('st1')},
+            2:{f:document.getElementById('game2'),s:document.getElementById('screen2'),t:document.getElementById('st2')}};
+ var idle={1:'Presiona START para cargar y empezar el juego.',2:'Presiona START para cargar el juego.'};
+ function ctrl(n){return $('[data-game="'+n+'"]')}
+ function setUi(n,on){
+  var c=ctrl(n);
+  for(var i=0;i<c.length;i++){
+   if(c[i].classList.contains('start')){c[i].textContent=on?'■ DETENER':'▶ START'}
+   else{c[i].disabled=!on}
+  }
+  games[n].s.parentNode.classList.toggle('on',on);
+ }
+ function load(n){var g=games[n];g.s.classList.add('loading');g.f.src=g.f.getAttribute('data-src');try{g.f.focus()}catch(e){}}
+ function start(n){
+  var g=games[n];
+  load(n);g.s.classList.add('on');setUi(n,true);
+  g.t.textContent=n==2?'Juego en ejecución. Haz clic dentro de la pantalla, espera a que cargue y presiona ENTER.':'Juego en ejecución. Haz clic dentro de la pantalla para activar el teclado.';
+ }
+ function stop(n){
+  var g=games[n];
+  g.f.removeAttribute('src');
+  g.s.classList.remove('on','loading');
+  setUi(n,false);
+  g.t.textContent=idle[n];
+ }
+ for(var k in games){(function(g){g.f.addEventListener('load',function(){g.s.classList.remove('loading')})})(games[k])}
+ var btns=$('.start');
+ for(var i=0;i<btns.length;i++){btns[i].addEventListener('click',function(){
+  var n=this.getAttribute('data-game'),other=n==1?2:1;
+  if(games[n].s.classList.contains('on')){stop(n)}
+  else{stop(other);start(n)}
+ })}
+ var acts=$('[data-act]');
+ for(var j=0;j<acts.length;j++){acts[j].addEventListener('click',function(){
+  var n=this.getAttribute('data-game'),g=games[n];
+  if(this.getAttribute('data-act')==='fs'){try{(g.s.requestFullscreen||g.s.webkitRequestFullscreen).call(g.s)}catch(e){}}
+  else{load(n)}
+ })}
+ /* Portada: núcleos flotantes + linterna que sigue al cursor */
+ var cb=document.getElementById('cubes'),h='';
+ for(var c=0;c<14;c++){h+='<i class="cube" style="--x:'+(Math.random()*94).toFixed(1)+'%;--y:'+(Math.random()*88).toFixed(1)+'%;--s:'+(10+Math.random()*16).toFixed(0)+'px;--r:'+(Math.random()*80).toFixed(0)+'deg;--t:'+(3+Math.random()*3).toFixed(1)+'s"></i>'}
+ cb.innerHTML=h;
+ var st=document.getElementById('stage');
+ st.addEventListener('pointermove',function(e){var r=st.getBoundingClientRect();st.style.setProperty('--mx',(e.clientX-r.left)+'px');st.style.setProperty('--my',(e.clientY-r.top)+'px')});
+ var tx=$('.txt>*');for(var t=0;t<tx.length;t++){tx[t].style.animationDelay=(t*90)+'ms'}
+ /* Barra de progreso y sección activa */
+ var links=$('header nav a'),secs=[document.getElementById('juego1'),document.getElementById('juego2')];
+ function onScroll(){
+  var d=document.documentElement,m=d.scrollHeight-innerHeight;
+  document.querySelector('header').style.setProperty('--p',(m>0?scrollY/m*100:0)+'%');
+  var mid=scrollY+innerHeight*.4;
+  for(var i=0;i<secs.length;i++){links[i].classList.toggle('act',mid>=secs[i].offsetTop&&mid<secs[i].offsetTop+secs[i].offsetHeight)}
+ }
+ addEventListener('scroll',onScroll,{passive:true});onScroll();
+ /* Aparición al hacer scroll */
+ var rv=$('.rv');
+ if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  for(var r=0;r<rv.length;r++){io.observe(rv[r])}
+ }else{for(var r2=0;r2<rv.length;r2++){rv[r2].classList.add('in')}}
+})();
+</script>
+</body>
+</html>
